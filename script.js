@@ -44,14 +44,26 @@ function addAppliance() {
 
 function displayAppliances() {
     const applianceList = document.getElementById("appliance-list");
-    applianceList.innerHTML = "";
+    applianceList.innerHTML = ""; // Clear the existing list before displaying updated list
 
     appliances.forEach((appliance, index) => {
         const li = document.createElement("li");
-        li.innerText = `${appliance.quantity} x ${appliance.applianceName} - ${appliance.power}W, ${appliance.usage} hrs/day`;
+        li.innerHTML = `${appliance.quantity} x ${appliance.applianceName} - ${appliance.power}W, ${appliance.usage} hrs/day 
+                        <span class="delete" onclick="deleteAppliance(${index})">❌</span>`;
         applianceList.appendChild(li);
     });
 }
+function deleteAppliance(index) {
+    // Remove the appliance from the array
+    appliances.splice(index, 1);
+
+    // Re-display the appliances
+    displayAppliances();
+
+    // Recalculate the bill after deleting the appliance
+    calculateBill();
+}
+
 
 function calculateBill() {
      const ratePerKWh = parseFloat(document.getElementById("puc").value);  // Correctly retrieve the rate per kWh from the input field
