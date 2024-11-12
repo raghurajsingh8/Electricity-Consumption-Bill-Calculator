@@ -40,6 +40,8 @@ function addAppliance() {
     } else {
         alert("Please enter valid details for all fields.");
     }
+
+    calculateBill();
 }
 
 function displayAppliances() {
@@ -52,6 +54,7 @@ function displayAppliances() {
                         <span class="delete" onclick="deleteAppliance(${index})">❌</span>`;
         applianceList.appendChild(li);
     });
+
 }
 function deleteAppliance(index) {
     // Remove the appliance from the array
