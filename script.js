@@ -23,6 +23,9 @@ function addAppliance() {
     const power = parseFloat(document.getElementById("power").value);
     const quantity = parseInt(document.getElementById("quantity").value);
     const usage = parseFloat(document.getElementById("usage").value);
+        const puc = parseInt(document.getElementById("puc").value);
+
+
 
     if (applianceName && power && quantity > 0 && usage >= 0) {
         appliances.push({ applianceName, power, quantity, usage });
@@ -51,7 +54,7 @@ function displayAppliances() {
 }
 
 function calculateBill() {
-    const ratePerKWh = 6;  // Rate per kWh in ₹
+    const ratePerKWh = puc;  // Rate per kWh in ₹
     let totalDailyConsumption = 0;
 
     appliances.forEach(appliance => {
