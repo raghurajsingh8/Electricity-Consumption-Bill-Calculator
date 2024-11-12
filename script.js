@@ -54,7 +54,12 @@ function displayAppliances() {
 }
 
 function calculateBill() {
-    const ratePerKWh = puc;  // Rate per kWh in ₹
+     const ratePerKWh = parseFloat(document.getElementById("puc").value);  // Correctly retrieve the rate per kWh from the input field
+    if (isNaN(ratePerKWh) || ratePerKWh <= 0) {
+        alert("Please enter a valid Per Unit Cost.");
+        return;
+    }
+    // const ratePerKWh = puc;  // Rate per kWh in ₹
     let totalDailyConsumption = 0;
 
     appliances.forEach(appliance => {
