@@ -140,3 +140,12 @@ button:hover {
         font-size: 14px;
     }
 }
+.delete {
+    color: red;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.delete:hover {
+    text-decoration: underline;
+}
