@@ -68,24 +68,72 @@ function deleteAppliance(index) {
 }
 
 
+// function calculateBill() {
+//      const ratePerKWh = parseFloat(document.getElementById("puc").value);  // Correctly retrieve the rate per kWh from the input field
+//     if (isNaN(ratePerKWh) || ratePerKWh <= 0) {
+//         alert("Please enter a valid Per Unit Cost.");
+//         return;
+//     }
+//     // const ratePerKWh = puc;  // Rate per kWh in ₹
+//     let totalDailyConsumption = 0;
+
+//     appliances.forEach(appliance => {
+//         const dailyConsumption = (appliance.power / 1000) * appliance.usage * appliance.quantity;
+//         totalDailyConsumption += dailyConsumption;
+//     });
+
+//     const totalMonthlyConsumption = totalDailyConsumption * 30;
+//     const monthlyBill = totalMonthlyConsumption * ratePerKWh;
+
+//     document.getElementById("daily-consumption").innerText = `Total Daily Consumption: ${totalDailyConsumption.toFixed(2)} kWh`;
+//     document.getElementById("monthly-consumption").innerText = `Total Monthly Consumption: ${totalMonthlyConsumption.toFixed(2)} kWh`;
+//     document.getElementById("monthly-bill").innerText = `Approximate Monthly Bill: ₹${monthlyBill.toFixed(2)}`;
+// }
+
+function calculateSanctionedLoad(appliances, diversityFactor = 0.8, safetyMargin = 0.2) {
+    let totalPower = 0;
+
+    // Calculate the total connected load
+    appliances.forEach(appliance => {
+        totalPower += appliance.power * appliance.quantity; // Total power in watts
+    });
+
+    // Apply diversity factor
+    let effectiveLoad = totalPower * diversityFactor;
+
+    // Add safety margin
+    let sanctionedLoad = effectiveLoad * (1 + safetyMargin);
+
+    // Convert to kilowatts and return
+    return sanctionedLoad / 1000; // Convert watts to kW
+}
+
 function calculateBill() {
-     const ratePerKWh = parseFloat(document.getElementById("puc").value);  // Correctly retrieve the rate per kWh from the input field
+    const ratePerKWh = parseFloat(document.getElementById("puc").value);
+
     if (isNaN(ratePerKWh) || ratePerKWh <= 0) {
         alert("Please enter a valid Per Unit Cost.");
         return;
     }
-    // const ratePerKWh = puc;  // Rate per kWh in ₹
+
     let totalDailyConsumption = 0;
 
+    // Calculate total daily consumption
     appliances.forEach(appliance => {
         const dailyConsumption = (appliance.power / 1000) * appliance.usage * appliance.quantity;
         totalDailyConsumption += dailyConsumption;
     });
 
-    const totalMonthlyConsumption = totalDailyConsumption * 30;
+    const totalMonthlyConsumption = totalDailyConsumption * 30; // 30 days in a month
     const monthlyBill = totalMonthlyConsumption * ratePerKWh;
 
+    // Calculate sanctioned load
+    const sanctionedLoad = calculateSanctionedLoad(appliances);
+
+    // Display results
     document.getElementById("daily-consumption").innerText = `Total Daily Consumption: ${totalDailyConsumption.toFixed(2)} kWh`;
     document.getElementById("monthly-consumption").innerText = `Total Monthly Consumption: ${totalMonthlyConsumption.toFixed(2)} kWh`;
     document.getElementById("monthly-bill").innerText = `Approximate Monthly Bill: ₹${monthlyBill.toFixed(2)}`;
+    document.getElementById("sanctioned-load").innerText = `Recommended Sanctioned Load: ${sanctionedLoad.toFixed(2)} kW`;
 }
+
